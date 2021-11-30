@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link href="main.css" type="text/css" rel="stylesheet">
+        <title>
+            상가 인원 밀집도 알리미
+        </title>
+    </head>
+    <body>
+        <script>
+            var local = "전체"
+            function set(){
+                window.open("setting.html");
+            }
+            function signUp(){ //회원가입 창 이동 함수
+                window.open("signup.html");
+            }
+            function search(){ // 검색 함수
+                local = document.getElementById('searching').value;
+                if(local == ""){
+                    local = "전체";
+                }
+                setting(local);
+            }
+            function refresh(){ // 새로고침 함수
+                setting(local);
+            }
+            function congestion(i){ // 혼잡도 계산 함수
+                if(i>=75){
+                    return "red";
+                }
+                if(i>=50){
+                    return "yellow";
+                }
+                if(i == 0){
+                    return "black";
+                }
+                else{
+                    return "green";
+                }
+            }
+            function setting(loc){ // 값 세팅 함수
+                var table = document.getElementById('table');
+
+                if(window.localStorage){
+                    if(document.getElementById("tbody")!=null){
+                        var clear = document.querySelectorAll("#tbody");
+                        for(var i=0; i<clear.length; i++){
+                            var item = clear[i];
+                            table.removeChild(item);
+                        }
+                    }
+                    for(var i = 0; i<localStorage.length;i++){
+                        var tbody = document.createElement("tbody");
+                        tbody.setAttribute("id","tbody");
+                        var key = localStorage.key(i);
+                        var value = localStorage.getItem(key).split("@");
+                        var keyArray = key.split("@");
+                        var con = (value[1]/value[0])*100; // 혼잡도 계산 값 입력
+                        con = congestion(con);
+
+                        if (keyArray[0] == loc || loc == "전체"){
+                            var html = '';
+                            html += '<tr>';
+                            html += '<td>';
+                            html += keyArray[0];
+                            html += '</td>';
+                            html += '<td>';
+                            html += keyArray[1];
+                            html += '</td>';
+                            html += '<td>';
+                            html += '<img src ="';
+                            html += con;
+                            html += '.png" width = "80px" height = "80px"'
+                            html += '</td>';
+                            html += '</tr>';
+                            tbody.innerHTML = html;
+                            table.appendChild(tbody);
+
+                        }
+                    }
+    
+                }
+            }
+        </script>
+
+        <header>
+            <h3>상가 인원 밀집도 알리미</h3>
+        </header>
+        <section>
+            <table id="table" border="1">
+                <div id = "choise">
+                    지역 선택 : <input type="text" size="15" id="searching" list = local maxlength="5" placeholder="지역 선택"> 
+                    <br>
+                    <button type="button" onclick="search()">검색</button>   <button type="button" onclick="refresh()">새로고침</button>
+                <datalist id = "local">
+                    <option value="전체">
+                    <option value="서울">
+                    <option value="부산">
+                    <option value="인천">
+                </datalist>
+                </div>
+            <caption>
+                <strong>목록</strong>
+            </caption>
+            <thead><tr><th>지역</th><th>상가 이름</th><th>혼잡도</th></tr></thead>
+            </table>
+        </section>
+        <footer>
+            <form>
+                <button type="button" onclick="set()">관리</button>
+                <button type="button" onclick="signUp()">등록</button>
+            </form>
+        </footer>
+        <script>
+            refresh();
+        </script>
+    </body>
+
+
+</html>
