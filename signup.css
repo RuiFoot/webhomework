@@ -1,0 +1,21 @@
+body{
+    font-family: 휴먼편지체; text-align: center;
+    background-color: skyblue;
+}
+header{
+    display: inline-block;
+    width: 100%; border: 5px solid skyblue;
+    border-radius: 10px;
+    background-color: skyblue;
+}
+section{
+    display: inline-block;
+    width: 50%;
+    border-radius: 10px;
+    background-color: skyblue;
+    text-align: center;
+}
+button{
+    cursor: pointer;
+    float: right;
+}
